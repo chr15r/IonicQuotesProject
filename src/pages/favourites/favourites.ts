@@ -3,6 +3,7 @@ import { Quote } from "../../data/quote.interface";
 import { QuotesService } from "../../services/quotes";
 import { ModalController } from "ionic-angular";
 import { QuotePage } from "../quote/quote";
+import { SettingsService } from "../../services/settings";
 
 @Component({
   selector: "page-favourites",
@@ -13,7 +14,8 @@ export class FavouritesPage {
 
   constructor(
     private quotesService: QuotesService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private settingsService: SettingsService
   ) {}
 
   ionViewWillEnter() {
@@ -25,16 +27,26 @@ export class FavouritesPage {
     modal.present();
     modal.onDidDismiss((remove: boolean) => {
       if (remove) {
-       this.onRemoveFromFavourites(quote);
+        this.onRemoveFromFavourites(quote);
       }
     });
   }
 
-  onRemoveFromFavourites(quote: Quote){
+  onRemoveFromFavourites(quote: Quote) {
     this.quotesService.removeQuoteFromFavourites(quote);
     // Refresh array as the page doesn't re-render when modal closes
     // Or you could splice from the array
     this.quotes = this.quotesService.getFavouriteQuotes();
+  }
+
+  getBackground() {
+    return this.settingsService.isAltBackground()
+      ? "altQuoteBackground"
+      : "quoteBackground";
+  }
+
+  isAltBackground() {
+    return this.settingsService.isAltBackground();
   }
 
 }

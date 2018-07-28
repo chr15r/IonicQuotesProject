@@ -25,11 +25,16 @@ export class FavouritesPage {
     modal.present();
     modal.onDidDismiss((remove: boolean) => {
       if (remove) {
-        this.quotesService.removeQuoteFromFavourites(quote);
-        // Refresh array as the page doesn't re-render when modal closes
-        // Or you could splice from the array
-        this.quotes = this.quotesService.getFavouriteQuotes();
+       this.onRemoveFromFavourites(quote);
       }
     });
   }
+
+  onRemoveFromFavourites(quote: Quote){
+    this.quotesService.removeQuoteFromFavourites(quote);
+    // Refresh array as the page doesn't re-render when modal closes
+    // Or you could splice from the array
+    this.quotes = this.quotesService.getFavouriteQuotes();
+  }
+
 }

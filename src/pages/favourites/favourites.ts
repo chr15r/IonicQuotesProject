@@ -1,25 +1,35 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component } from "@angular/core";
+import { Quote } from "../../data/quote.interface";
+import { QuotesService } from "../../services/quotes";
+import { ModalController } from "ionic-angular";
+import { QuotePage } from "../quote/quote";
 
-/**
- * Generated class for the FavouritesPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
-  selector: 'page-favourites',
-  templateUrl: 'favourites.html',
+  selector: "page-favourites",
+  templateUrl: "favourites.html"
 })
 export class FavouritesPage {
+  quotes: Quote[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    private quotesService: QuotesService,
+    private modalCtrl: ModalController
+  ) {}
+
+  ionViewWillEnter() {
+    this.quotes = this.quotesService.getFavouriteQuotes();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad FavouritesPage');
+  onViewQuote(quote: Quote) {
+    const modal = this.modalCtrl.create(QuotePage, quote);
+    modal.present();
+    modal.onDidDismiss((remove: boolean) => {
+      if (remove) {
+        this.quotesService.removeQuoteFromFavourites(quote);
+        // Refresh array as the page doesn't re-render when modal closes
+        // Or you could splice from the array
+        this.quotes = this.quotesService.getFavouriteQuotes();
+      }
+    });
   }
-
 }

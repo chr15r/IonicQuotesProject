@@ -1,0 +1,15 @@
+ionic start firstapp blank --type=ionic-angular
+
+If your project uses Ionic 3 (check the package.json to see the version number), 
+ionic generate page XY  will give you a slightly different output than shown in the 
+videos:
+
+a) You get an additional .module.ts  file: This file might contain a little bug, make 
+sure it uses IonicPageModule.forChild(...)  and also import { IonicPageModule } from 
+'ionic-angular'   and NOT IonicModule.forChild(...) !
+
+b) Your page will be named YourName  and not YourNamePage . Refer to it as YourName  
+in your code then (and not YourNamePage ).
+
+Besides that, it works the same. Make sure to add it to your declarations[] 
+and entryComponents[] array in AppModule and you should be good to go.
